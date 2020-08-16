@@ -1,9 +1,7 @@
 add_library(Catch INTERFACE)
-target_include_directories(Catch INTERFACE "catch")
+target_include_directories(Catch INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/catch")
 
-set(TESTS "AllTests")
-
-add_executable(AllTests
+add_seasocks_executable(AllTests
         test_main.cpp
         ConnectionTests.cpp
         CrackedUriTests.cpp
@@ -21,10 +19,6 @@ add_executable(AllTests
         RequestTest.cpp
         )
 
-add_test(NAME ${TESTS} COMMAND ${TESTS})
-target_link_libraries(${TESTS} PRIVATE seasocks Catch)
+target_link_libraries(AllTests PRIVATE Catch Threads::Threads)
 
-add_custom_target(unittest ${TESTS}
-                    COMMENT "Running unittests\n\n"
-                    VERBATIM
-                    )
+add_test(NAME AllTests COMMAND AllTests)
